@@ -171,3 +171,15 @@ The also-list type is 12px / weight 800 (was 10px). The 14 rows still share the 
 ### Next
 
 Pushed to origin main.
+
+### Session 7 (done) — true-aspect map and figures
+
+The map box was stretching the world: a 400×384 viewBox with `preserveAspectRatio="none"` turned the continents into spikes. `build/map.mjs` now draws lon -170..190 and lat 75..-56 at true equirectangular scale, so the map is 400×145.6 and sits at the top of the WHERE IT HAPPENED column. Coasts are the original outlines in `build/coast-am.mjs`, `build/coast-af.mjs`, and `build/coast-old.mjs` (old world, not an unused leftover). Numbered badges 1–13 stay near their real lon/lat; the other 27 stories are small dots. The region legend is directly under the map.
+
+The space below is THE DAY IN FIGURES, four tiles in the region colours: 2,049 drones (Moscow's claim), 11,200 Ebola cases (Africa CDC, six months), $120bn a year (poorer states' COP31 ask), 5,700+ US measles cases (PAHO, across 2026).
+
+Checked `/tmp/map.png`: Americas, Africa and South America read as continents, not spikes, and the pins sit on the right regions. `sh build/build.sh`: 1024×1024 palette PNG, 100,811 bytes. At 300px the date, the three leads, the four figures and the also lines still read. `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts` matched `entry.png`.
+
+### Next
+
+Pushed to origin main.

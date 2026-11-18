@@ -77,6 +77,16 @@ const alsoItems = also.map((s) => {
   return `<li><b style="background:${color}">${n}</b><span>${esc(line)}</span></li>`;
 }).join('');
 
+const FIGURES = [
+  ['2,049', 'drones intercepted', "Moscow's claim, Kerch night", '#1d4e89'],
+  ['11,200', 'Ebola cases, 6 months', 'Africa CDC, not one day', '#1e7a46'],
+  ['$120bn', 'a year to adapt', "Poorer states' COP31 ask", '#2c333a'],
+  ['5,700+', 'US measles cases', 'PAHO, across 2026', '#0c7c86'],
+];
+const figTiles = FIGURES.map(([num, label, attr, color]) =>
+  `<div class="fig" style="--c:${color}"><b>${esc(num)}</b><span>${esc(label)}</span><em>${esc(attr)}</em></div>`,
+).join('');
+
 const sources = [];
 for (const s of data.stories) if (!sources.includes(s.source)) sources.push(s.source);
 const foot = `Every story was reported on ${DATE}; disputed claims are attributed. Sources: ${sources.join(', ')}. Original drawings.`;
@@ -145,20 +155,33 @@ const html = `<!DOCTYPE html>
   .lead .dek { font-size: 10px; line-height: 12px; height: 24px; }
   .main .dek { height: 22px; }
   .bottom {
-    display: grid; column-gap: 8px;
+    display: grid; column-gap: 8px; row-gap: 2px;
     grid-template-columns: 400px minmax(0, 1fr);
-    grid-template-rows: 15px minmax(0, 1fr) 14px;
+    grid-template-rows: 14px calc(400px * 131 / 360) 14px minmax(0, 1fr);
     min-height: 0;
   }
   .bottom h2 { font-size: 11px; line-height: 14px; font-weight: 800; letter-spacing: .05em; }
-  .map-slot { background: #c5dced; min-height: 0; overflow: hidden; }
+  .map-slot { background: #c5dced; overflow: hidden; }
   .map-slot svg { width: 100%; height: 100%; display: block; }
   .also-head { grid-column: 2; grid-row: 1; }
   .where { grid-column: 1; grid-row: 1; }
   .map-slot { grid-column: 1; grid-row: 2; }
-  .legend { grid-column: 1; grid-row: 3; gap: 6px; overflow: hidden; white-space: nowrap; }
+  .legend { grid-column: 1; grid-row: 3; gap: 5px; overflow: hidden; white-space: nowrap; }
+  .figures { grid-column: 1; grid-row: 4; display: grid; grid-template-rows: 14px minmax(0, 1fr); gap: 2px; min-height: 0; }
+  .fig-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; min-height: 0; }
+  .fig {
+    background: #fbf7ef; border: 1px solid #d9d0c2; border-top: 3px solid var(--c);
+    padding: 3px 5px 2px; min-width: 0; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .fig b {
+    font-family: "Liberation Serif", "Noto Serif", "DejaVu Serif", serif;
+    font-size: 26px; line-height: 28px; font-weight: 700; color: var(--c);
+  }
+  .fig span { font-size: 11px; line-height: 13px; font-weight: 800; }
+  .fig em { font-size: 9px; line-height: 11px; font-style: normal; font-weight: 700; color: #3a342c; }
   .also {
-    grid-column: 2; grid-row: 2 / span 2;
+    grid-column: 2; grid-row: 2 / span 3;
     list-style: none; display: grid; grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(14, minmax(0, 1fr)); grid-auto-flow: column;
     gap: 0 8px; min-height: 0;
@@ -184,6 +207,7 @@ const html = `<!DOCTYPE html>
     <h2 class="where">WHERE IT HAPPENED</h2>
     <div class="map-slot">${worldMap(pins, dots)}</div>
     <p class="legend">${legend}</p>
+    <div class="figures"><h2>THE DAY IN FIGURES</h2><div class="fig-grid">${figTiles}</div></div>
     <h2 class="also-head">ALSO ON TUESDAY 17 NOVEMBER</h2>
     <ol class="also">${alsoItems}</ol>
   </section>
