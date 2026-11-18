@@ -1,0 +1,75 @@
+# news-image-20261117
+
+One image of Tuesday 17 November 2026. Gate: a whole PNG or JPEG, at most 1,048,576 bytes, exactly 1024 x 1024. Smaller file wins an exact tie. Judge order: names that day with real events; breadth; readable alone; faithful; craft, legible at about 300 px.
+
+## Session 1 (done) — research
+
+`data/stories.json` holds 40 stories: 3 lead, 9 main, 28 also. Date filter is strict. Kept only events that happened on 17 November 2026 or were first reported that day in some time zone.
+
+Primary source: Wikipedia Portal:Current events/2026 November 17. Filled gaps from same-day wires and desks (Reuters, AP, AFP, BBC, Al Jazeera/AFP on COP31, The Hindu, Democracy Now headlines, Just Security early edition, allAfrica's 17 November Africa brief).
+
+### How to read the file
+
+- `n` is rank, not a map requirement. Leads 1–3, mains 4–12, also 13–40.
+- Headlines are plain ASCII. Lead/main headlines are at most 42 characters. Also headlines are `PLACE: what happened` and at most 52. Deks are at most 95 characters and carry a number or a name.
+- Disputed points are attributed in the dek. Do not promote them to bare fact in the drawing.
+- `art` is a one-line brief for an original flat-vector icon. No photos, no likenesses, no gore.
+- `lat`/`lon` is where it happened (or where the announcement was made). Several Antalya and Shenzhen pins are expected.
+
+### Do not "correct" into older knowledge
+
+This day's reporting includes Sanae Takaichi as Japan's prime minister, Ed Miliband as UK foreign secretary, Sebastien Lecornu as France's prime minister, Mark Carney with Xi, and an ongoing US-Israel war with Iran that reporting dates from February 2026. Draw the names the sources use.
+
+### Faithfulness traps for the drawing
+
+- Kerch: two people killed and the road closed are reported. A fallen span is an OSINT / Ukrainian-image claim. Peskov called the damage minor and under assessment. Say "reported", do not draw it as an undisputed collapse if the label cannot carry the hedge. Moscow's figure is 2,049 drones intercepted (also given as more than 2,000).
+- Bahrain: intercepted, no casualties or damage reported. US strikes on Qeshm: at least six. Drone: Wikipedia/Le Monde say an MQ-9 was shot down south of Qeshm; the IRGC also claimed it landed an MQM-170. Those may be one claim told two ways. The dek says only "IRGC says a drone is down."
+- Hormuz: three ships on fire, including an LNG carrier and a supertanker with more than 2 million barrels. Separate from the Bahrain raid.
+- Kyiv: Klitschko says the North and South bridges were hit overnight. Seven dead and 50,000 without power are Ukraine-wide figures, not a Kyiv-only toll.
+- Ebola: Africa CDC warning on the 17th. 11,200 cases and 5,500 deaths are the six-month totals, not Tuesday's deaths. Eight provinces. Bundibugyo strain; no effective vaccine, per that warning.
+- Canada tariffs: AFP says C$400 million of exports. AP's "about $280 million" is the same deal in US dollars. Draw C$400m only. AP adds that Canada extends steel and aluminium relief by two years; the dek says "steel relief stays" and does not invent a second number.
+- Rwanda hub: a plan by Germany, Denmark, Austria, Greece and the Netherlands for about 100 people, aimed at 2027. Not open. Sanchez says it has no humanity.
+- Berlin: Witkoff and Kushner are due Thursday. Do not draw the meeting as if it happened Tuesday.
+- Paris strike: 5.8 million public workers were called out. No turnout number. Do not invent one.
+- Prague: 46 injured. No death toll in the sources used.
+- Quad: Trump met the leaders of India, Japan and Australia in Manila. First leaders' meeting in two years. Thursday trilateral with Xi and Putin is in Shenzhen, not Tuesday. Do not name Australia's prime minister; the copy used does not.
+- Geneva killer-robot talks opened Monday and were still in session. The dek says so.
+- Measles: PAHO revoked elimination status for the United States, Mexico and Bolivia. US: more than 5,700 cases and multiple deaths across 2026, continuous transmission over 12 months. Pin is Washington (PAHO). Bolivia is the South American name in that card; do not add a second story for it.
+- West Bank and Gaza are different events. Fadha Wadha, 72, ten hurt, army did not comment on her death. Gaza: Anadolu says five killed, including a child.
+- Apple: Pay, iCloud, App Store, AppleCare. Company blames an internal update and rules out a cyberattack.
+
+### Left out on purpose
+
+Reported earlier, so not shown as Tuesday's news: US "dirty bomb" intelligence (CNN dateline 16 November); Houthi gains at Bab al-Mandab; USS Theodore Roosevelt arrival copy datelined the 16th; JPMorgan outage; US stock drop; data-centre emissions study (Monday's Nature Sustainability); Pope Leo's South America tour (farewell Mass Monday in Lima); South Africa shootings listed on the 16 November current-events page; Guterres's ASEAN speech (Monday). Australia’s West Bank sanctions were worded as Wednesday. No confirmed spaceflight story. No verified notable obituary for the 17th (the deaths page had an empty 17 November section).
+
+Culture is the thin beat: Sozcu TV is media/politics, not arts. Do not invent a culture item.
+
+## Session 2 — render pipeline and layout
+
+Build a pure-Node renderer (dev dependency none; stdlib only is required for `main.ts`, and the renderer should be stdlib too so it can be re-run anywhere). It reads `data/stories.json` and writes `entry.png`. `main.ts` stays a copy program.
+
+Layout, 1024 x 1024, warm off-white paper, newspaper infographic:
+
+- Masthead: full date "Tuesday 17 November 2026", kicker "THE DAY IN WORLD NEWS", line "40 STORIES · 6 CONTINENTS" (no Antarctica story).
+- Three lead cards and nine main cards. Each: original flat illustration, tag `REGION · FIELD`, headline, one-line dek.
+- "WHERE IT HAPPENED" map with numbered pins for stories 1–12 only. Forty pins will not be legible at 300 px. Also-list items keep their coordinates in JSON but stay off the map unless a test proves tiny dots still read.
+- "ALSO ON TUESDAY 17 NOVEMBER": two columns. 28 lines may be too small. If the 300 px squint fails, cut the weakest also items (GRAP was already dropped; next cuts would be Bilkis, Sozcu, Manila protests) rather than shrink type below legibility. Target body type that still reads when the whole image is 300 px wide.
+- Footer: "Every story was reported on Tuesday 17 November 2026; disputed claims are attributed. Sources: Reuters, AP, AFP, BBC, ..." plus a short judge-note box only if it does not crowd the news.
+
+Palette PNG (indexed colour), not a photographic RGBA. File size should land well under 1 MiB; smaller is the tie-break.
+
+## Session 3 — illustrations and map
+
+Draw the 12 card icons from each `art` line as simple SVG paths (few shapes, 2–3 flat colours, no text inside the icon). One shared world map, quiet coastlines, pins 1–12 with a legend that matches the cards. No borrowed artwork.
+
+## Session 4 — polish, README, push
+
+- Re-read every label against this note. Fix any dek the layout had to shorten so it does not drop the hedge.
+- Confirm 1024 x 1024, PNG signature, byte size, and that two runs of `main.ts` write the same bytes.
+- Squint test: downscale to 300 px and check the date, the three leads, and the map numbers.
+- README: what the image is, how to run `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts`.
+- Commit and push. Push belongs to session 4, not before.
+
+## This session's log
+
+Researched the day, wrote `data/stories.json` (40 stories), rewrote `main.ts` as its own copy program, and left this plan. Next session starts the renderer and the page layout. The placeholder `entry.png` is unchanged until that render exists.
