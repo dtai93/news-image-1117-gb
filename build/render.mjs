@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { illustration } from './art/index.mjs';
+import { worldMap } from './map.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
@@ -54,6 +55,16 @@ const alsoRows = Math.ceil(also.length / 2);
 const alsoItems = also.map((s) =>
   `<li><span class="n">${s.n}</span><span class="t">${esc(s.headline)}</span></li>`).join('');
 
+const PLACES = {
+  1: 'Kerch', 2: 'Bahrain', 3: 'Manila', 4: 'Washington',
+  5: 'Antalya', 6: 'Shenzhen', 7: 'London', 8: 'Jericho',
+  9: 'Mongolia', 10: 'Japan', 11: 'Dhaka', 12: 'Congo',
+};
+const legend = stories
+  .filter((s) => s.n <= 12)
+  .map((s) => `${s.n} ${PLACES[s.n]}`)
+  .join(' · ');
+
 const foot = `Every story was reported on ${DATE}; disputed claims are attributed. Sources: ${sources.join(', ')}.`;
 
 const html = `<!DOCTYPE html>
@@ -78,7 +89,7 @@ const html = `<!DOCTYPE html>
     height: 1024px;
     padding: 6px 8px 4px;
     display: grid;
-    grid-template-rows: 76px 189px 384px 80px 233px 32px;
+    grid-template-rows: 76px 189px 384px 317px 32px;
     gap: 4px;
     background: #f3ecdf;
   }
@@ -171,59 +182,68 @@ const html = `<!DOCTYPE html>
     max-height: 26px;
   }
 
-  .map {
-    background: #fffaf3;
-    border: 1px solid #e0d3c3;
-    padding: 3px 6px 4px;
-    display: grid;
-    grid-template-rows: 16px minmax(0, 1fr);
-    gap: 2px;
-  }
-  .map-head { display: flex; justify-content: space-between; align-items: baseline; }
   h2 {
     font-size: 15px;
     line-height: 16px;
     font-weight: 800;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #9b2330;
+    white-space: nowrap;
+    overflow: hidden;
   }
-  .map-note { font-size: 12px; font-weight: 700; color: #1a1612; }
-  .map-slot { background: #d5e4f0; min-height: 0; overflow: hidden; }
-  .map-slot svg { width: 100%; height: 100%; display: block; }
-
-  .also {
+  .lower {
     display: grid;
-    grid-template-rows: 18px minmax(0, 1fr);
-    gap: 1px;
+    grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+    grid-template-rows: 18px minmax(0, 1fr) 16px;
+    column-gap: 10px;
+    row-gap: 2px;
     border-top: 2px solid #9b2330;
     padding-top: 2px;
   }
-  .also ol {
+  .map-head { grid-column: 1; grid-row: 1; }
+  .map-slot { grid-column: 1; grid-row: 2; background: #d5e4f0; min-height: 0; overflow: hidden; }
+  .map-slot svg { width: 100%; height: 100%; display: block; }
+  .also-head { grid-column: 2; grid-row: 1; }
+  .also {
+    grid-column: 2;
+    grid-row: 2;
     list-style: none;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(${alsoRows}, minmax(0, 1fr));
     grid-auto-flow: column;
-    column-gap: 14px;
+    column-gap: 8px;
     min-height: 0;
   }
   .also li {
     display: flex;
-    gap: 5px;
+    gap: 3px;
     align-items: baseline;
     min-width: 0;
     overflow: hidden;
     white-space: nowrap;
-    font-size: 13px;
-    line-height: 15px;
+    font-size: 11px;
+    line-height: 13px;
+    letter-spacing: -0.03em;
     color: #1a1612;
   }
   .also .n {
-    flex: 0 0 18px;
+    flex: 0 0 15px;
     font-size: 11px;
     font-weight: 800;
     color: #9b2330;
+  }
+  .legend {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #1a1612;
   }
 
   .foot {
@@ -254,25 +274,16 @@ const html = `<!DOCTYPE html>
     <section class="mains">
       ${mains.map((s) => card(s, 'main')).join('\n')}
     </section>
-    <section class="map">
-      <div class="map-head">
-        <h2>Where it happened</h2>
-        <p class="map-note">Stories 1–12</p>
-      </div>
+    <section class="lower">
+      <div class="map-head"><h2>Where it happened</h2></div>
       <div class="map-slot">
-        <!-- session 3: world map, numbered pins 1–12 -->
-        <svg viewBox="0 0 980 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect width="980" height="64" fill="#d5e4f0"/>
-          <rect x="6" y="6" width="968" height="52" fill="none" stroke="#7ea3bf" stroke-width="2"/>
-          <text x="490" y="40" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="#1a3a52">MAP · PINS 1–12</text>
-        </svg>
+        ${worldMap(stories.filter((s) => s.n <= 12))}
       </div>
-    </section>
-    <section class="also">
-      <h2>Also on Tuesday 17 November</h2>
-      <ol>
+      <div class="also-head"><h2>Also on Tuesday 17 November</h2></div>
+      <ol class="also">
         ${alsoItems}
       </ol>
+      <p class="legend">${esc(legend)}</p>
     </section>
     <footer class="foot">
       <p>${esc(foot)}</p>

@@ -108,6 +108,14 @@ What each new icon shows, from that story's `art` line: a crowned seal, three ho
 
 Main illustration strips are now 60px (viewBox 320×60). Stories 4–6 were redrawn into that frame so they are not letterboxed. 70px would have pushed the lead pictures smaller than the mains. To free the rows, the lead slot is 113px (the 320×150 drawings meet-fit, with side mats in the card colour), the map track is 80px, the also block is 233px, and the footer is 32px. Type sizes are unchanged. Footer and all 28 also lines still fit. `sh build/build.sh`: 1024×1024, 87,225 bytes.
 
-### Next (session 3c)
+### Session 3c (done) — where it happened
 
-Replace `.map-slot` with one quiet world map and pins 1–12. The map track is 80px (slot about 53px tall); widen it only if the pins cannot be read at 300px, and do not shrink the main strips back to a hairline. Optional: redraw s1–s3 into the 113px lead frame so those three pictures are full-bleed again. Keep the type sizes. Re-run `sh build/build.sh` and stay under 1,000,000 bytes.
+`build/landmask.mjs` is a 90×40 equirectangular mask (`#` land, `.` sea), north at row 0. `build/map.mjs` draws one small circle per land cell and red numbered badges for stories 1–12. Badges sit on short leaders so Kerch, Antalya, Jericho, Bahrain, Dhaka and Shenzhen do not stack. The true spot stays a small red dot.
+
+The old 80px map strip is gone. The map and the also-list share one 317px band: map about 40% on the left, also-list about 60% on the right, legend on one line underneath: "1 Kerch · 2 Bahrain · … · 12 Congo". Also lines are 11px so the long headlines still fit. Lead and main type are unchanged. Main strips stay 60px.
+
+`sh build/build.sh`: 1024×1024, 95,353 bytes. Pins 1–12 read on the continents, the legend is complete, and the 28 also lines are not cut off.
+
+### Next (session 4)
+
+Re-read every label against the faithfulness notes. Optional: redraw s1–s3 into the 113px lead frame so those three pictures are full-bleed. Squint test at 300px (date, three leads, map numbers). README with `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts`. Confirm two runs of `main.ts` match. Commit and push. Push belongs to session 4, not before.
