@@ -41,11 +41,30 @@ function icon(story, tall) {
   return illustration(story.n, tall);
 }
 
+const GROUPS = [
+  ['War', '#9b2330', ['UKRAINE WAR', 'IRAN WAR', 'GAZA WAR', 'CONFLICT', 'SECURITY']],
+  ['Diplomacy', '#1d4e89', ['DIPLOMACY']],
+  ['Politics', '#6e4b2a', ['POLITICS', 'JUSTICE', 'LABOUR', 'MEDIA', 'MIGRATION']],
+  ['Economy', '#8a6a12', ['ECONOMY', 'ENERGY', 'MARKETS', 'TECH']],
+  ['Health', '#1f6b45', ['HEALTH']],
+  ['Climate', '#0f6e78', ['CLIMATE']],
+  ['Disaster', '#c45c26', ['DISASTER']],
+  ['Sport', '#2f6b3a', ['SPORT']],
+];
+
+function fieldColor(field) {
+  for (const [, color, fields] of GROUPS) {
+    if (fields.includes(field)) return color;
+  }
+  return '#6e4b2a';
+}
+
 function card(story, tier) {
   const tall = tier === 'lead';
+  const color = fieldColor(story.field);
   return `<article class="card ${tier}">
     <div class="ill" data-n="${story.n}" data-art="${esc(story.art)}">${icon(story, tall)}</div>
-    <p class="tag"><span class="idx">${story.n}</span>${esc(story.region)} · ${esc(story.field)}</p>
+    <p class="tag"><i class="sw" style="background:${color}"></i><span class="idx">${story.n}</span>${esc(story.region)} · ${esc(story.field)}</p>
     <h3>${esc(story.headline)}</h3>
     <p class="dek">${esc(story.dek)}</p>
   </article>`;
@@ -66,6 +85,7 @@ const legend = stories
   .join(' · ');
 
 const foot = `Every story was reported on ${DATE}; disputed claims are attributed. Sources: ${sources.join(', ')}.`;
+const keyRow = GROUPS.map(([name, color]) => `<span><i style="background:${color}"></i>${name}</span>`).join('');
 
 const html = `<!DOCTYPE html>
 <html lang="en">
@@ -89,7 +109,7 @@ const html = `<!DOCTYPE html>
     height: 1024px;
     padding: 6px 8px 4px;
     display: grid;
-    grid-template-rows: 76px 189px 384px 317px 32px;
+    grid-template-rows: 76px 14px 176px 368px 308px 52px;
     gap: 4px;
     background: #f3ecdf;
   }
@@ -123,13 +143,32 @@ const html = `<!DOCTYPE html>
   .rules i:first-child { height: 3px; }
   .rules i:last-child { height: 1px; }
 
+  .key {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #1a1612;
+    white-space: nowrap;
+  }
+  .key i, .tag i.sw {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 3px;
+    vertical-align: -1px;
+  }
+
   .leads, .mains {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 4px;
     min-height: 0;
   }
-  .mains { grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 3px; }
+  .mains { grid-template-rows: repeat(3, minmax(0, 1fr)); }
 
   .card {
     background: #fffaf3;
@@ -142,12 +181,12 @@ const html = `<!DOCTYPE html>
   }
   .lead {
     padding: 4px 6px 3px;
-    grid-template-rows: 113px 13px 22px 26px;
+    grid-template-rows: 100px 13px 22px 26px;
     row-gap: 2px;
   }
   .main {
     padding: 3px 5px 2px;
-    grid-template-rows: 60px 12px 18px 26px;
+    grid-template-rows: 54px 12px 18px 26px;
     row-gap: 1px;
   }
   .ill { overflow: hidden; background: #efe6d8; }
@@ -194,7 +233,7 @@ const html = `<!DOCTYPE html>
   }
   .lower {
     display: grid;
-    grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+    grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
     grid-template-rows: 18px minmax(0, 1fr) 16px;
     column-gap: 10px;
     row-gap: 2px;
@@ -213,7 +252,7 @@ const html = `<!DOCTYPE html>
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(${alsoRows}, minmax(0, 1fr));
     grid-auto-flow: column;
-    column-gap: 8px;
+    column-gap: 6px;
     min-height: 0;
   }
   .also li {
@@ -225,7 +264,7 @@ const html = `<!DOCTYPE html>
     white-space: nowrap;
     font-size: 11px;
     line-height: 13px;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     color: #1a1612;
   }
   .also .n {
@@ -248,13 +287,39 @@ const html = `<!DOCTYPE html>
 
   .foot {
     border-top: 2px solid #9b2330;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 492px;
+    column-gap: 8px;
     align-items: center;
+    padding-top: 2px;
   }
-  .foot p {
+  .foot .src {
     font-size: 11px;
     line-height: 13px;
     color: #1a1612;
+    overflow: hidden;
+  }
+  .judge {
+    border: 1.5px solid #9b2330;
+    background: #fffaf3;
+    padding: 1px 6px 2px;
+    min-width: 0;
+  }
+  .judge b {
+    display: block;
+    font-size: 11px;
+    line-height: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9b2330;
+  }
+  .judge p {
+    font-size: 11px;
+    line-height: 13px;
+    letter-spacing: -0.02em;
+    color: #1a1612;
+    white-space: nowrap;
   }
 </style>
 </head>
@@ -268,6 +333,7 @@ const html = `<!DOCTYPE html>
       <h1>${DATE}</h1>
       <div class="rules" aria-hidden="true"><i></i><i></i></div>
     </header>
+    <div class="key">${keyRow}</div>
     <section class="leads">
       ${leads.map((s) => card(s, 'lead')).join('\n')}
     </section>
@@ -277,7 +343,7 @@ const html = `<!DOCTYPE html>
     <section class="lower">
       <div class="map-head"><h2>Where it happened</h2></div>
       <div class="map-slot">
-        ${worldMap(stories.filter((s) => s.n <= 12))}
+        ${worldMap(stories.filter((s) => s.n <= 12).map((s) => ({ ...s, color: fieldColor(s.field) })))}
       </div>
       <div class="also-head"><h2>Also on Tuesday 17 November</h2></div>
       <ol class="also">
@@ -286,7 +352,12 @@ const html = `<!DOCTYPE html>
       <p class="legend">${esc(legend)}</p>
     </section>
     <footer class="foot">
-      <p>${esc(foot)}</p>
+      <p class="src">${esc(foot)}</p>
+      <aside class="judge">
+        <b>Judge note</b>
+        <p>Every story happened or was first reported on Tuesday 17 November 2026.</p>
+        <p>Disputed claims are attributed.</p>
+      </aside>
     </footer>
   </div>
 </body>

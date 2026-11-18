@@ -116,6 +116,22 @@ The old 80px map strip is gone. The map and the also-list share one 317px band: 
 
 `sh build/build.sh`: 1024×1024, 95,353 bytes. Pins 1–12 read on the continents, the legend is complete, and the 28 also lines are not cut off.
 
+### Next (session 3d)
+
+Compare the page with the winning template and close the gaps: map crop and shapes, clipped also-lines, the stray cross on the Kerch picture, a judge-note box, and a field colour key.
+
+### Session 3d (done) — template gaps
+
+`build/map.mjs` now draws the world from simplified outlines, cropped to 75N–56S. `build/landmask.mjs` is unused. The Antarctica band is gone. North America, South America, Europe, Africa, Asia and Australia read as separate shapes, and pins 1–12 sit on those places. Pin badges use the field colours.
+
+Also-list lines that ran into the column edge are shorter (Apple Pay / App Store, Cyclone Akvan, and the other long ones). Nothing in that list is cut.
+
+The Kerch icon is two drones and smoke over a broken span. The cross mark is gone.
+
+Added a one-line field key (War, Diplomacy, Politics, Economy, Health, Climate, Disaster, Sport) with a swatch on each card, and a judge-note box: every story happened or was first reported on Tuesday 17 November 2026; disputed claims are attributed. Lead and main headlines name who did what. Each of those deks has a digit.
+
+`sh build/build.sh`: 1024×1024, 99,623 bytes. Downscaled to 300 px wide: the date and the three lead headlines read.
+
 ### Next (session 4)
 
-Re-read every label against the faithfulness notes. Optional: redraw s1–s3 into the 113px lead frame so those three pictures are full-bleed. Squint test at 300px (date, three leads, map numbers). README with `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts`. Confirm two runs of `main.ts` match. Commit and push. Push belongs to session 4, not before.
+Re-read every label against the faithfulness notes. Squint test of the map numbers at 300 px. README with `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts`. Confirm two runs of `main.ts` match. Commit and push. Push belongs to session 4, not before.
