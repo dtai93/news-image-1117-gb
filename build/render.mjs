@@ -1,5 +1,5 @@
 // Reads data/stories.json and writes build/page.html (1024×1024).
-// Node standard library only. Stories 1–6 use build/art; the rest use a neutral fallback.
+// Node standard library only. Stories 1–12 use build/art.
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -78,7 +78,7 @@ const html = `<!DOCTYPE html>
     height: 1024px;
     padding: 6px 8px 4px;
     display: grid;
-    grid-template-rows: 76px 230px 306px 96px 240px 46px;
+    grid-template-rows: 76px 189px 384px 80px 233px 32px;
     gap: 4px;
     background: #f3ecdf;
   }
@@ -131,15 +131,16 @@ const html = `<!DOCTYPE html>
   }
   .lead {
     padding: 4px 6px 3px;
-    grid-template-rows: 150px 13px 22px 26px;
+    grid-template-rows: 113px 13px 22px 26px;
     row-gap: 2px;
   }
   .main {
     padding: 3px 5px 2px;
-    grid-template-rows: 27px 12px 18px 26px;
+    grid-template-rows: 60px 12px 18px 26px;
     row-gap: 1px;
   }
   .ill { overflow: hidden; background: #efe6d8; }
+  .lead .ill { background: #fffaf3; }
   .ill svg { width: 100%; height: 100%; display: block; }
   .tag {
     font-size: 11px;

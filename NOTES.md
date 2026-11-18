@@ -99,3 +99,15 @@ What each icon shows, from that story's `art` line: the Kerch Bridge with one ro
 ### Next (session 3b)
 
 Draw stories 7–12 the same way (`s7.mjs` … `s12.mjs`, register them in `build/art/index.mjs`). Then replace `.map-slot` with one quiet world map and pins 1–12. Keep the type sizes. Re-run `sh build/build.sh` and stay under 1,000,000 bytes.
+
+### Session 3b (done) — illustrations for stories 7–12, taller main strips
+
+`build/art/s7.mjs` through `s12.mjs` export `art()` in the same flat palette as s1–s6. `build/art/index.mjs` registers 1–12. No text inside the icons.
+
+What each new icon shows, from that story's `art` line: a crowned seal, three houses, and an aid truck stopped by a red barrier; a house, two olive trees, and one candle (no person); a columned hall, a short rail line, and a generic figure stepping down; two fighter shapes, a red alert arc over a small island, and a Japan arc (Hokkaido, a Honshu curve, a small inner island, Kyushu) on a sea panel; a sawtooth factory, a gated road, and two blank placards; a sea inset with the DRC corridor reaching the left edge, a medical cross, and a warning mark.
+
+Main illustration strips are now 60px (viewBox 320×60). Stories 4–6 were redrawn into that frame so they are not letterboxed. 70px would have pushed the lead pictures smaller than the mains. To free the rows, the lead slot is 113px (the 320×150 drawings meet-fit, with side mats in the card colour), the map track is 80px, the also block is 233px, and the footer is 32px. Type sizes are unchanged. Footer and all 28 also lines still fit. `sh build/build.sh`: 1024×1024, 87,225 bytes.
+
+### Next (session 3c)
+
+Replace `.map-slot` with one quiet world map and pins 1–12. The map track is 80px (slot about 53px tall); widen it only if the pins cannot be read at 300px, and do not shrink the main strips back to a hairline. Optional: redraw s1–s3 into the 113px lead frame so those three pictures are full-bleed again. Keep the type sizes. Re-run `sh build/build.sh` and stay under 1,000,000 bytes.
