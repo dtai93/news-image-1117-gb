@@ -163,9 +163,9 @@ const html = `<!DOCTYPE html>
     grid-template-rows: repeat(14, minmax(0, 1fr)); grid-auto-flow: column;
     gap: 0 8px; min-height: 0;
   }
-  .also li { display: flex; gap: 4px; align-items: center; min-width: 0; overflow: hidden; }
-  .also b { flex: 0 0 auto; min-width: 14px; color: #fff; font-size: 8px; line-height: 12px; text-align: center; font-weight: 800; }
-  .also span { font-size: 10px; line-height: 12px; font-weight: 650; white-space: nowrap; overflow: hidden; }
+  .also li { display: flex; gap: 3px; align-items: center; min-width: 0; overflow: hidden; }
+  .also b { flex: 0 0 auto; min-width: 16px; color: #fff; font-size: 9px; line-height: 13px; text-align: center; font-weight: 800; }
+  .also span { font-size: 12px; line-height: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; }
   footer { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 6px; border-top: 2px solid #9b2330; padding-top: 3px; }
   .src { font-size: 8.5px; line-height: 11px; }
   .judge { border: 1px solid #1a1612; padding: 2px 5px; font-size: 8.5px; line-height: 11px; }

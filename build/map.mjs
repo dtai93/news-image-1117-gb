@@ -1,10 +1,13 @@
-// Filled continents, cropped to 75N..56S so Antarctica is not a solid band.
-// Outlines are original and simplified. Numbered pins are the illustrated stories.
+// Equirectangular crop: 75N..56S, 170W..190E. Longitude and latitude
+// are scaled independently onto the map box so the land fills it.
+// No Antarctica. Outlines are original and simplified.
 
 const LAT_N = 75;
 const LAT_S = -56;
-const W = 980;
-const H = 400;
+const LON_W = -170;
+const LON_E = 190;
+const W = 400;
+const H = 384;
 
 // [lon, lat] clockwise. Islands are separate so seas stay open.
 const LAND_P = [
@@ -43,20 +46,21 @@ const SEA_P = [
   [[35.2, 14], [40, 15], [43, 20], [42, 26], [38, 27.5], [35, 22]],
 ];
 
-const OFFSET = {
-  1: [24, 20],
-  2: [-32, 24],
-  3: [24, 16],
-  4: [28, 8],
-  5: [-22, -32],
-  6: [-30, 0],
-  7: [36, 6],
-  8: [6, -36],
-  9: [-28, 16],
-  10: [18, -18],
-  11: [20, -20],
-  12: [0, 22],
-  13: [-36, 20],
+// Preferred badge shift, in map pixels, away from the tight clusters.
+const PREFER = {
+  1: [18, -16],
+  2: [22, 28],
+  3: [30, 20],
+  4: [-34, 16],
+  5: [-26, 22],
+  6: [32, -20],
+  7: [32, -26],
+  8: [-6, -30],
+  9: [-4, 32],
+  10: [30, -8],
+  11: [6, -30],
+  12: [0, 30],
+  13: [-26, 14],
 };
 
 function inside(x, y, poly) {
@@ -76,9 +80,58 @@ export function isLand(lon, lat) {
 }
 
 function xy(lat, lon) {
-  const x = ((Number(lon) + 180) / 360) * W;
+  let L = Number(lon);
+  if (L < LON_W) L += 360;
+  if (L > LON_E) L -= 360;
+  const x = ((L - LON_W) / (LON_E - LON_W)) * W;
   const y = ((LAT_N - Number(lat)) / (LAT_N - LAT_S)) * H;
   return [x, y];
+}
+
+function rect(cx, cy, w, h) {
+  return { x1: cx - w / 2, y1: cy - h / 2, x2: cx + w / 2, y2: cy + h / 2, cx, cy, w, h };
+}
+
+function hit(a, b, pad) {
+  return a.x1 < b.x2 + pad && a.x2 + pad > b.x1 && a.y1 < b.y2 + pad && a.y2 + pad > b.y1;
+}
+
+function placeBadge(n, x, y, taken) {
+  const w = n >= 10 ? 20 : 16;
+  const h = 16;
+  const pref = PREFER[n] || [0, -20];
+  const ring = [[0, -28], [0, 28], [-30, 0], [30, 0], [-22, -22], [22, -22], [-22, 22], [22, 22], [0, -42], [0, 42], [-42, 0], [42, 0]];
+  const tries = [pref, ...ring.map(([dx, dy]) => [pref[0] + dx * 0.45, pref[1] + dy * 0.45]), ...ring];
+  for (const [dx, dy] of tries) {
+    const cx = Math.min(W - w / 2 - 1, Math.max(w / 2 + 1, x + dx));
+    const cy = Math.min(H - h / 2 - 1, Math.max(h / 2 + 1, y + dy));
+    const b = rect(cx, cy, w, h);
+    if (taken.every((t) => !hit(b, t, 2))) {
+      taken.push(b);
+      return b;
+    }
+  }
+  const b = rect(x, y, w, h);
+  taken.push(b);
+  return b;
+}
+
+function placeDot(x, y, taken) {
+  const spots = [[0, 0]];
+  for (const d of [8, 14, 20]) {
+    spots.push([d, 0], [-d, 0], [0, d], [0, -d], [d, d], [-d, d], [d, -d], [-d, -d]);
+  }
+  for (const [dx, dy] of spots) {
+    const cx = x + dx;
+    const cy = y + dy;
+    if (cx < 5 || cy < 5 || cx > W - 5 || cy > H - 5) continue;
+    const b = rect(cx, cy, 8, 8);
+    if (taken.every((t) => !hit(b, t, 1))) {
+      taken.push(b);
+      return [cx, cy];
+    }
+  }
+  return [Math.min(W - 5, Math.max(5, x)), Math.min(H - 5, Math.max(5, y))];
 }
 
 function n1(n) {
@@ -98,36 +151,35 @@ function ring(poly) {
 export function worldMap(pins, dots) {
   const land = LAND_P.map((p) => `<path d="${ring(p)}"/>`).join('');
   const seas = SEA_P.map((p) => `<path d="${ring(p)}" fill="#c5dced"/>`).join('');
+  const taken = [];
+  const placed = pins.map((pin) => {
+    const [x, y] = xy(pin.lat, pin.lon);
+    return { pin, x, y, b: placeBadge(pin.n, x, y, taken) };
+  });
+  for (const p of placed) taken.push(rect(p.x, p.y, 8, 8));
   const marks = [];
   for (const dot of dots || []) {
     const [x, y] = xy(dot.lat, dot.lon);
-    const jx = ((dot.n * 17) % 9) - 4;
-    const jy = ((dot.n * 11) % 9) - 4;
-    marks.push(`<circle cx="${n1(x + jx)}" cy="${n1(y + jy)}" r="4.2" fill="${dot.color}" opacity="0.95"/>`);
+    const [cx, cy] = placeDot(x, y, taken);
+    marks.push(`<circle cx="${n1(cx)}" cy="${n1(cy)}" r="3.6" fill="${dot.color}" stroke="#1a1612" stroke-width="0.7"/>`);
   }
   const lines = [];
   const badges = [];
-  for (const pin of pins) {
-    const [x, y] = xy(pin.lat, pin.lon);
-    const off = OFFSET[pin.n] || [0, 0];
-    const two = pin.n >= 10;
-    const rw = two ? 16 : 13;
-    const rh = 12;
-    const lx = Math.min(W - rw - 2, Math.max(rw + 2, x + off[0]));
-    const ly = Math.min(H - rh - 2, Math.max(rh + 2, y + off[1]));
+  for (const { pin, x, y, b } of placed) {
     const fill = pin.color || '#9b2330';
-    lines.push(`<circle cx="${n1(x)}" cy="${n1(y)}" r="3.4" fill="${fill}" stroke="#fffaf3" stroke-width="1"/>`);
-    if (Math.hypot(lx - x, ly - y) > 10) {
-      lines.push(`<line x1="${n1(x)}" y1="${n1(y)}" x2="${n1(lx)}" y2="${n1(ly)}" stroke="${fill}" stroke-width="1.6"/>`);
+    lines.push(`<circle cx="${n1(x)}" cy="${n1(y)}" r="2.6" fill="${fill}" stroke="#fffaf3" stroke-width="0.8"/>`);
+    if (Math.hypot(b.cx - x, b.cy - y) > 11) {
+      lines.push(`<line x1="${n1(x)}" y1="${n1(y)}" x2="${n1(b.cx)}" y2="${n1(b.cy)}" stroke="${fill}" stroke-width="1.3"/>`);
     }
     badges.push(
-      `<rect x="${n1(lx - rw)}" y="${n1(ly - rh)}" width="${rw * 2}" height="${rh * 2}" rx="4" fill="${fill}"/>`,
-      `<text x="${n1(lx)}" y="${n1(ly + 5)}" text-anchor="middle" font-family="Inter, Liberation Sans, DejaVu Sans, sans-serif" font-size="16" font-weight="800" fill="#fffaf3">${pin.n}</text>`,
+      `<rect x="${n1(b.x1)}" y="${n1(b.y1)}" width="${b.w}" height="${b.h}" rx="3" fill="${fill}"/>`,
+      `<text x="${n1(b.cx)}" y="${n1(b.cy)}" text-anchor="middle" dominant-baseline="central" font-family="Inter, Liberation Sans, DejaVu Sans, sans-serif" font-size="11" font-weight="800" fill="#fffaf3">${pin.n}</text>`,
     );
   }
-  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Where it happened">
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Where it happened">
     <rect width="${W}" height="${H}" fill="#c5dced"/>
-    <g fill="#e7d3a8" stroke="#b7a27a" stroke-width="1.2">${land}</g>
+    <g fill="#5a4030" stroke="#5a4030" stroke-width="2.4" stroke-linejoin="round">${land}</g>
+    <g fill="#e7d3a8">${land}</g>
     ${seas}
     ${marks.join('')}
     ${lines.join('')}

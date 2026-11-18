@@ -159,3 +159,15 @@ Facts are still the researched day. Illustrated set: Kerch, Bahrain, the Quad, E
 ### Next
 
 Pushed to origin main. No further layout work unless a judge pass names a pin or a line that still fails.
+
+### Session 6 (done) — map fill and also-list rows
+
+The map was letterboxed: a 980×400 viewBox with `meet` sat in the middle of the 400×384 slot, so the world was a short band with empty sea above and below. `build/map.mjs` now projects 75N..56S and 170W..190E independently onto that slot (`preserveAspectRatio="none"`). Continents run from the top edge to near the bottom (no Antarctica). Land has a thin darker outline. Numbered badges are 16px (20px wide for 10–13). All 27 also-list dots are drawn and nudged off the badges. The region legend is unchanged.
+
+The also-list type is 12px / weight 800 (was 10px). The 14 rows still share the column height evenly. Lines that would have clipped at that size are shorter; the hedges stay (Anadolu, Axios, Seoul's ADIZ claim, Geneva since Monday, the firm ruling out a hack). Checked at 300px: the date, the three leads, the map pins, and the also lines read, and nothing is cut off at the right edge.
+
+`sh build/build.sh`: 1024×1024 palette PNG, 99,420 bytes. `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts` matched `entry.png`.
+
+### Next
+
+Pushed to origin main.
