@@ -72,4 +72,18 @@ Draw the 12 card icons from each `art` line as simple SVG paths (few shapes, 2�
 
 ## This session's log
 
-Researched the day, wrote `data/stories.json` (40 stories), rewrote `main.ts` as its own copy program, and left this plan. Next session starts the renderer and the page layout. The placeholder `entry.png` is unchanged until that render exists.
+Researched the day, wrote `data/stories.json` (40 stories), rewrote `main.ts` as its own copy program, and left this plan.
+
+### Session 2 (done) — render pipeline and layout
+
+`build/render.mjs` reads `data/stories.json` and writes `build/page.html`. `build/build.sh` runs that, then `shot.mjs` at 1024×1024 on port 18796, then `build/pack.py`. Pack quantizes to a 128-colour palette with no dither and writes `entry.png`. This run: 1024×1024, 79,620 bytes.
+
+Fonts in use: Playfair Display for the date and card headlines, Inter for tags, deks, the also list, and the footer. Every text size is at least 11px. Lead headlines are 17px, main headlines 15px, the date is 46px.
+
+Layout that fitted, top to bottom: masthead (full date, "THE DAY IN WORLD NEWS", "40 STORIES · 6 CONTINENTS"), three lead cards with a 150px illustration slot, nine main cards in a 3×3 grid with a short illustration strip, a "WHERE IT HAPPENED" placeholder (stories 1–12 only), "ALSO ON TUESDAY 17 NOVEMBER" in two columns of 14, and the sources footer. No judge-note box; the page is full. Checked the rendered page: lead and main deks stay on two lines inside the card, also lines stay on one line, nothing overlaps the footer.
+
+`build/raw.png` is gitignored. Illustrations are numbered flat placeholders, not the final icons.
+
+### Next (session 3)
+
+Replace each `.ill` SVG from the story `art` line (few shapes, 2–3 flat colours, no text in the icon) and replace `.map-slot` with one quiet world map and pins 1–12. Keep the type sizes. Re-run `sh build/build.sh` and confirm the file stays under 1,000,000 bytes.

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tuesday 17 November 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1024px;
+    height: 1024px;
+    overflow: hidden;
+    background: #f3ecdf;
+    color: #1a1612;
+  }
+  body {
+    font-family: Inter, "Source Sans 3", "Source Sans Pro", Roboto, "Liberation Sans", "DejaVu Sans", sans-serif;
+  }
+  .page {
+    width: 1024px;
+    height: 1024px;
+    padding: 6px 8px 4px;
+    display: grid;
+    grid-template-rows: 76px 230px 306px 96px 240px 46px;
+    gap: 4px;
+    background: #f3ecdf;
+  }
+  .page > * { min-height: 0; min-width: 0; overflow: hidden; }
+
+  .mast { display: grid; grid-template-rows: 16px 52px 8px; align-items: center; }
+  .mast-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .kicker {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #9b2330;
+  }
+  .count {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #1a1612;
+  }
+  h1 {
+    font-family: "Playfair Display", "Source Serif Pro", "Noto Serif", "Liberation Serif", serif;
+    font-weight: 700;
+    font-size: 46px;
+    line-height: 48px;
+    letter-spacing: -0.02em;
+    color: #1a1612;
+  }
+  .rules { display: flex; flex-direction: column; justify-content: center; gap: 2px; height: 8px; }
+  .rules i { display: block; background: #9b2330; }
+  .rules i:first-child { height: 3px; }
+  .rules i:last-child { height: 1px; }
+
+  .leads, .mains {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    min-height: 0;
+  }
+  .mains { grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 3px; }
+
+  .card {
+    background: #fffaf3;
+    border: 1px solid #e0d3c3;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    display: grid;
+    align-content: start;
+  }
+  .lead {
+    padding: 4px 6px 3px;
+    grid-template-rows: 150px 13px 22px 26px;
+    row-gap: 2px;
+  }
+  .main {
+    padding: 3px 5px 2px;
+    grid-template-rows: 27px 12px 18px 26px;
+    row-gap: 1px;
+  }
+  .ill { overflow: hidden; background: #efe6d8; }
+  .ill svg { width: 100%; height: 100%; display: block; }
+  .tag {
+    font-size: 11px;
+    line-height: 12px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #7a2a22;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .idx { color: #9b2330; margin-right: 4px; }
+  h3 {
+    font-family: "Playfair Display", "Source Serif Pro", "Noto Serif", "Liberation Serif", serif;
+    font-weight: 700;
+    color: #1a1612;
+    white-space: nowrap;
+    overflow: hidden;
+    letter-spacing: -0.015em;
+  }
+  .lead h3 { font-size: 17px; line-height: 20px; }
+  .main h3 { font-size: 15px; line-height: 17px; }
+  .dek {
+    font-size: 11px;
+    line-height: 13px;
+    color: #241f1a;
+    overflow: hidden;
+    max-height: 26px;
+  }
+
+  .map {
+    background: #fffaf3;
+    border: 1px solid #e0d3c3;
+    padding: 3px 6px 4px;
+    display: grid;
+    grid-template-rows: 16px minmax(0, 1fr);
+    gap: 2px;
+  }
+  .map-head { display: flex; justify-content: space-between; align-items: baseline; }
+  h2 {
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9b2330;
+  }
+  .map-note { font-size: 12px; font-weight: 700; color: #1a1612; }
+  .map-slot { background: #d5e4f0; min-height: 0; overflow: hidden; }
+  .map-slot svg { width: 100%; height: 100%; display: block; }
+
+  .also {
+    display: grid;
+    grid-template-rows: 18px minmax(0, 1fr);
+    gap: 1px;
+    border-top: 2px solid #9b2330;
+    padding-top: 2px;
+  }
+  .also ol {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(14, minmax(0, 1fr));
+    grid-auto-flow: column;
+    column-gap: 14px;
+    min-height: 0;
+  }
+  .also li {
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 15px;
+    color: #1a1612;
+  }
+  .also .n {
+    flex: 0 0 18px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #9b2330;
+  }
+
+  .foot {
+    border-top: 2px solid #9b2330;
+    display: flex;
+    align-items: center;
+  }
+  .foot p {
+    font-size: 11px;
+    line-height: 13px;
+    color: #1a1612;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="mast">
+      <div class="mast-top">
+        <p class="kicker">The Day in World News</p>
+        <p class="count">40 STORIES · 6 CONTINENTS</p>
+      </div>
+      <h1>Tuesday 17 November 2026</h1>
+      <div class="rules" aria-hidden="true"><i></i><i></i></div>
+    </header>
+    <section class="leads">
+      <article class="card lead">
+    <div class="ill" data-n="1" data-art="Flat side view of the Kerch Bridge with one road span broken into the strait and a small drone above."><svg class="ico" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="150" fill="#d7e3f2"/>
+    <rect x="214" y="22" width="62" height="44" fill="#1e4d78"/>
+    <rect x="22" y="108" width="150" height="10" fill="#1a1612"/>
+       <rect x="22" y="126" width="96" height="8" fill="#1e4d78"/>
+    <text x="22" y="78" font-family="Inter, sans-serif" font-size="40" font-weight="700" fill="#1a1612">1</text>
+  </svg></div>
+    <p class="tag"><span class="idx">1</span>EUROPE · UKRAINE WAR</p>
+    <h3>Ukraine hits Crimean Bridge again</h3>
+    <p class="dek">Two dead; a span is reported down in the Kerch Strait. Moscow cites 2,049 drones.</p>
+  </article>
+<article class="card lead">
+    <div class="ill" data-n="2" data-art="Coastal radar base, a drone breaking apart short of it, and a small island marked with six strike ticks."><svg class="ico" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="150" fill="#f6e1c2"/>
+    <polygon points="230,18 268,70 192,70" fill="#a15c20"/>
+    <rect x="22" y="108" width="150" height="10" fill="#1a1612"/>
+       <rect x="22" y="126" width="96" height="8" fill="#a15c20"/>
+    <text x="22" y="78" font-family="Inter, sans-serif" font-size="40" font-weight="700" fill="#1a1612">2</text>
+  </svg></div>
+    <p class="tag"><span class="idx">2</span>MIDDLE EAST · IRAN WAR</p>
+    <h3>Bahrain intercepts Iranian drones</h3>
+    <p class="dek">Bahrain reports no damage. US hit Qeshm six-plus times; IRGC says a drone is down.</p>
+  </article>
+<article class="card lead">
+    <div class="ill" data-n="3" data-art="Airliner over Manila Bay with four small flags: United States, India, Japan, Australia."><svg class="ico" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="150" fill="#f6eec8"/>
+    <circle cx="248" cy="46" r="26" fill="#8d6b10"/>
+    <rect x="22" y="108" width="150" height="10" fill="#1a1612"/>
+       <rect x="22" y="126" width="96" height="8" fill="#8d6b10"/>
+    <text x="22" y="78" font-family="Inter, sans-serif" font-size="40" font-weight="700" fill="#1a1612">3</text>
+  </svg></div>
+    <p class="tag"><span class="idx">3</span>ASIA · DIPLOMACY</p>
+    <h3>Trump lands in Manila for Quad</h3>
+    <p class="dek">He met India, Japan and Australia: first Quad summit in two years, then Xi and Putin.</p>
+  </article>
+    </section>
+    <section class="mains">
+      <article class="card main">
+    <div class="ill" data-n="4" data-art="Three simple country outlines with a cracked health shield and a small measles spot."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#d9ead6"/>
+    <rect x="214" y="8" width="48" height="20" fill="#246b45"/>
+    <rect x="18" y="14" width="64" height="8" fill="#246b45"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">4</span>AMERICAS · HEALTH</p>
+    <h3>Americas lose measles-free status</h3>
+    <p class="dek">PAHO revokes the US, Mexico and Bolivia. The US logged 5,700 cases and several deaths.</p>
+  </article>
+<article class="card main">
+    <div class="ill" data-n="5" data-art="Sun over a conference hall, an oil barrel with a crack through it, two arrows pulling apart."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#f6eec8"/>
+    <polygon points="236,6 270,30 202,30" fill="#8d6b10"/>
+    <rect x="18" y="14" width="64" height="8" fill="#8d6b10"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">5</span>ASIA · CLIMATE</p>
+    <h3>COP31 split on fossil phaseout</h3>
+    <p class="dek">Nearly 200 nations in Antalya. Poorer states seek at least $120bn a year to adapt.</p>
+  </article>
+<article class="card main">
+    <div class="ill" data-n="6" data-art="Canada and China flags, a container, and a downward arrow on a tariff tag."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#d9ead6"/>
+    <circle cx="248" cy="18" r="10" fill="#246b45"/>
+    <rect x="18" y="14" width="64" height="8" fill="#246b45"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">6</span>AMERICAS · ECONOMY</p>
+    <h3>China cuts more Canada tariffs</h3>
+    <p class="dek">Xi and Carney: China eases tariffs on C$400m of Canadian goods; steel relief stays.</p>
+  </article>
+<article class="card main">
+    <div class="ill" data-n="7" data-art="UK crest stamp over a small settlement block and a blocked aid truck."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#d7e3f2"/>
+    <rect x="214" y="8" width="48" height="20" fill="#1e4d78"/>
+    <rect x="18" y="14" width="64" height="8" fill="#1e4d78"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">7</span>EUROPE · DIPLOMACY</p>
+    <h3>UK sanctions settler builders</h3>
+    <p class="dek">Miliband names eight West Bank construction firms and the aid-blocking group Tzav 9.</p>
+  </article>
+<article class="card main">
+    <div class="ill" data-n="8" data-art="Flat village house and olive trees with a single candle; no graphic violence."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#f6e1c2"/>
+    <polygon points="236,6 270,30 202,30" fill="#a15c20"/>
+    <rect x="18" y="14" width="64" height="8" fill="#a15c20"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">8</span>MIDDLE EAST · CONFLICT</p>
+    <h3>Settlers kill woman near Jericho</h3>
+    <p class="dek">Officials name Fadha Wadha, 72. Ten were hurt. The Israeli army did not comment.</p>
+  </article>
+<article class="card main">
+    <div class="ill" data-n="9" data-art="Government building, a short rail line, and a figure stepping down from a podium."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#f6eec8"/>
+    <circle cx="248" cy="18" r="10" fill="#8d6b10"/>
+    <rect x="18" y="14" width="64" height="8" fill="#8d6b10"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">9</span>ASIA · POLITICS</p>
+    <h3>Mongolia's president to resign</h3>
+    <p class="dek">Khurelsukh denies a $25m railway claim and says he will face investigators.</p>
+  </article>
+<article class="card main">
+    <div class="ill" data-n="10" data-art="Two fighter silhouettes, a Japan outline, and a thin alert arc over a small island."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#f6eec8"/>
+    <rect x="214" y="8" width="48" height="20" fill="#8d6b10"/>
+    <rect x="18" y="14" width="64" height="8" fill="#8d6b10"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">10</span>ASIA · SECURITY</p>
+    <h3>Japan scrambles over Russian jets</h3>
+    <p class="dek">Two aircraft entered airspace near Okinoshima. Seoul says planes crossed its ADIZ only.</p>
+  </article>
+<article class="card main">
+    <div class="ill" data-n="11" data-art="Garment factory, a blocked highway, and placards. No crowd portraits."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#f6eec8"/>
+    <polygon points="236,6 270,30 202,30" fill="#8d6b10"/>
+    <rect x="18" y="14" width="64" height="8" fill="#8d6b10"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">11</span>ASIA · ECONOMY</p>
+    <h3>Bangladesh garment pay clashes</h3>
+    <p class="dek">Workers want 30,000 taka, up from 12,500. At least 37 factories have shut.</p>
+  </article>
+<article class="card main">
+    <div class="ill" data-n="12" data-art="DRC outline, a medical cross, and a warning triangle. No gore."><svg class="ico" viewBox="0 0 300 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect width="300" height="36" fill="#f7dcc8"/>
+    <circle cx="248" cy="18" r="10" fill="#9a3b16"/>
+    <rect x="18" y="14" width="64" height="8" fill="#9a3b16"/>
+    
+  </svg></div>
+    <p class="tag"><span class="idx">12</span>AFRICA · HEALTH</p>
+    <h3>Congo Ebola still out of control</h3>
+    <p class="dek">Africa CDC: 11,200 cases and 5,500 deaths in six months, across eight provinces.</p>
+  </article>
+    </section>
+    <section class="map">
+      <div class="map-head">
+        <h2>Where it happened</h2>
+        <p class="map-note">Stories 1–12</p>
+      </div>
+      <div class="map-slot">
+        <!-- session 3: world map, numbered pins 1–12 -->
+        <svg viewBox="0 0 980 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="980" height="64" fill="#d5e4f0"/>
+          <rect x="6" y="6" width="968" height="52" fill="none" stroke="#7ea3bf" stroke-width="2"/>
+          <text x="490" y="40" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="#1a3a52">MAP · PINS 1–12</text>
+        </svg>
+      </div>
+    </section>
+    <section class="also">
+      <h2>Also on Tuesday 17 November</h2>
+      <ol>
+        <li><span class="n">13</span><span class="t">GAZA: Strikes kill five Palestinians, one a child</span></li><li><span class="n">14</span><span class="t">HORMUZ: Three ships catch fire in the strait</span></li><li><span class="n">15</span><span class="t">KYIV: Russian strikes shut two Dnipro bridges</span></li><li><span class="n">16</span><span class="t">PRAGUE: Two trains collide and injure 46</span></li><li><span class="n">17</span><span class="t">SIBERIA: Military An-12 crash kills all 19 aboard</span></li><li><span class="n">18</span><span class="t">GOPALGANJ: Mob burns a police station, loots guns</span></li><li><span class="n">19</span><span class="t">CUPERTINO: Apple Pay, iCloud and the App Store fail</span></li><li><span class="n">20</span><span class="t">PARIS: Public-sector unions strike over pay</span></li><li><span class="n">21</span><span class="t">BELGRADE: New parliament sits after election win</span></li><li><span class="n">22</span><span class="t">KIGALI: Five EU states plan a migrant return hub</span></li><li><span class="n">23</span><span class="t">BRUSSELS: EU sanctions Wildberries founder Kim</span></li><li><span class="n">24</span><span class="t">GENEVA: 128 states debate rules on killer robots</span></li><li><span class="n">25</span><span class="t">MUSCAT: Oman and Iran discuss open sea lanes</span></li><li><span class="n">26</span><span class="t">MEXICO: Sheinbaum asks Xi for closer practical ties</span></li><li><span class="n">27</span><span class="t">MANILA: Japan offers ASEAN its crude oil stocks</span></li><li><span class="n">28</span><span class="t">INDIA: Rupee gains 43 paise to close at 93.51</span></li><li><span class="n">29</span><span class="t">DELHI: Court to hear 48 questions on voter rolls</span></li><li><span class="n">30</span><span class="t">ANDHRA: Coastal districts alerted for Cyclone Akvan</span></li><li><span class="n">31</span><span class="t">CHENNAI: Dhoni retires from the IPL, named mentor</span></li><li><span class="n">32</span><span class="t">ISTANBUL: State takes opposition Sozcu TV off air</span></li><li><span class="n">33</span><span class="t">INDIA: Bilkis Bano vows to fight two convicts' bail</span></li><li><span class="n">34</span><span class="t">ANTALYA: Britain signs a call for polluter levies</span></li><li><span class="n">35</span><span class="t">ANTALYA: Pacific states want IPCC report by 2028</span></li><li><span class="n">36</span><span class="t">BERLIN: US envoys set Ukraine talks for Thursday</span></li><li><span class="n">37</span><span class="t">KUALA LUMPUR: France and Malaysia sign a pact</span></li><li><span class="n">38</span><span class="t">SIGUIRI: Guinea holds 1,263 in illegal-gold sweep</span></li><li><span class="n">39</span><span class="t">SINGAPORE: Brazil win 7-0; Vinicius scores three</span></li><li><span class="n">40</span><span class="t">MANILA: Protests mark a fifth day as Trump meets</span></li>
+      </ol>
+    </section>
+    <footer class="foot">
+      <p>Every story was reported on Tuesday 17 November 2026; disputed claims are attributed. Sources: Reuters, AFP, AP, BBC, Africa CDC, Anadolu, Democracy Now, The Independent, The Daily Star, Time, RFE/RL, FT, NPR, The Hindu, The Guardian, Axios, allAfrica.</p>
+    </footer>
+  </div>
+</body>
+</html>
