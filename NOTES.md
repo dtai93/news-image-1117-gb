@@ -147,3 +147,15 @@ Footer in `build/render.mjs` now ends with the source list and "Original drawing
 ### Next
 
 None for this entry. Pushed to origin main.
+
+### Session 5 (done) — match the leading layout
+
+Compared `winner-1117-a.jpg` with our page and rebuilt the composition. Masthead is now "THE WORLD'S NEWS IN ONE PICTURE" on the left and "40 STORIES · 6 CONTINENTS · ALL FROM TUESDAY" on the right, with the full date at 50px. Three lead cards have concrete scenes, a dark caption strip and a red stat chip, and 18px two-line headlines. Ten smaller illustrated cards sit in two rows of five. The map is filled continent shapes on a light blue sea, region-coloured numbered pins for stories 1–13, small dots for the also-list, and a region legend that uses the same colours as the tags. The field key and the judge note stay.
+
+Facts are still the researched day. Illustrated set: Kerch, Bahrain, the Quad, Ebola, COP31, measles, Hormuz, Kyiv, Jericho, the Canada tariff cut, Khurelsukh, the Bangladesh wage clash, and Serbia's new parliament. The other 27 stay in the also-list. No extra stories were added: the day's page did not confirm three more that belong on this date. Hedges kept in the picture: the Kerch span is "reported" down, the drone is what the IRGC says, Gaza's toll is Anadolu's, the seven dead are nationwide, Seoul's ADIZ claim is on the Japan line, and the Berlin meeting is Thursday.
+
+`sh build/build.sh`: 1024×1024 palette PNG, 89,952 bytes. Downscaled to 300px, the date, the three lead headlines and the caption strips read. `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts` matched `entry.png`.
+
+### Next
+
+Pushed to origin main. No further layout work unless a judge pass names a pin or a line that still fails.

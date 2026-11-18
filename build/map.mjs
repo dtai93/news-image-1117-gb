@@ -1,12 +1,10 @@
-// Dotted world, cropped to 75N..56S so Antarctica is not a solid band.
-// Land is rasterised from original simplified outlines. Pins are stories 1–12.
+// Filled continents, cropped to 75N..56S so Antarctica is not a solid band.
+// Outlines are original and simplified. Numbered pins are the illustrated stories.
 
 const LAT_N = 75;
 const LAT_S = -56;
-const W = 900;
-const H = 328;
-const COLS = 120;
-const ROWS = 44;
+const W = 980;
+const H = 400;
 
 // [lon, lat] clockwise. Islands are separate so seas stay open.
 const LAND_P = [
@@ -46,18 +44,19 @@ const SEA_P = [
 ];
 
 const OFFSET = {
-  1: [-30, -40],
-  2: [46, 6],
-  3: [52, 28],
-  4: [-44, -22],
-  5: [-62, 2],
-  6: [8, 46],
-  7: [-46, -6],
-  8: [-28, 42],
-  9: [6, -40],
-  10: [40, -18],
-  11: [-48, 18],
-  12: [-56, 10],
+  1: [24, 20],
+  2: [-32, 24],
+  3: [24, 16],
+  4: [28, 8],
+  5: [-22, -32],
+  6: [-30, 0],
+  7: [36, 6],
+  8: [6, -36],
+  9: [-28, 16],
+  10: [18, -18],
+  11: [20, -20],
+  12: [0, 22],
+  13: [-36, 20],
 };
 
 function inside(x, y, poly) {
@@ -86,17 +85,25 @@ function n1(n) {
   return n.toFixed(1);
 }
 
-export function worldMap(pins) {
-  const cw = W / COLS;
-  const ch = H / ROWS;
-  const dots = [];
-  for (let r = 0; r < ROWS; r++) {
-    const lat = LAT_N - ((r + 0.5) / ROWS) * (LAT_N - LAT_S);
-    for (let c = 0; c < COLS; c++) {
-      const lon = -180 + ((c + 0.5) / COLS) * 360;
-      if (!isLand(lon, lat)) continue;
-      dots.push(`<circle cx="${n1((c + 0.5) * cw)}" cy="${n1((r + 0.5) * ch)}" r="2.9"/>`);
-    }
+function ring(poly) {
+  let d = '';
+  for (let i = 0; i < poly.length; i++) {
+    const [lon, lat] = poly[i];
+    const [x, y] = xy(lat, lon);
+    d += `${i ? 'L' : 'M'}${n1(x)} ${n1(y)}`;
+  }
+  return `${d}Z`;
+}
+
+export function worldMap(pins, dots) {
+  const land = LAND_P.map((p) => `<path d="${ring(p)}"/>`).join('');
+  const seas = SEA_P.map((p) => `<path d="${ring(p)}" fill="#c5dced"/>`).join('');
+  const marks = [];
+  for (const dot of dots || []) {
+    const [x, y] = xy(dot.lat, dot.lon);
+    const jx = ((dot.n * 17) % 9) - 4;
+    const jy = ((dot.n * 11) % 9) - 4;
+    marks.push(`<circle cx="${n1(x + jx)}" cy="${n1(y + jy)}" r="4.2" fill="${dot.color}" opacity="0.95"/>`);
   }
   const lines = [];
   const badges = [];
@@ -104,38 +111,26 @@ export function worldMap(pins) {
     const [x, y] = xy(pin.lat, pin.lon);
     const off = OFFSET[pin.n] || [0, 0];
     const two = pin.n >= 10;
-    const rw = two ? 18 : 14;
-    const rh = 14;
-    let lx = Math.min(W - rw - 3, Math.max(rw + 3, x + off[0]));
-    let ly = Math.min(H - rh - 3, Math.max(rh + 3, y + off[1]));
+    const rw = two ? 16 : 13;
+    const rh = 12;
+    const lx = Math.min(W - rw - 2, Math.max(rw + 2, x + off[0]));
+    const ly = Math.min(H - rh - 2, Math.max(rh + 2, y + off[1]));
     const fill = pin.color || '#9b2330';
-    lines.push(`<circle cx="${n1(x)}" cy="${n1(y)}" r="4.5" fill="${fill}"/>`);
-    if (Math.hypot(lx - x, ly - y) > 8) {
-      lines.push(`<line x1="${n1(x)}" y1="${n1(y)}" x2="${n1(lx)}" y2="${n1(ly)}" stroke="${fill}" stroke-width="2.2"/>`);
+    lines.push(`<circle cx="${n1(x)}" cy="${n1(y)}" r="3.4" fill="${fill}" stroke="#fffaf3" stroke-width="1"/>`);
+    if (Math.hypot(lx - x, ly - y) > 10) {
+      lines.push(`<line x1="${n1(x)}" y1="${n1(y)}" x2="${n1(lx)}" y2="${n1(ly)}" stroke="${fill}" stroke-width="1.6"/>`);
     }
     badges.push(
-      `<rect x="${n1(lx - rw)}" y="${n1(ly - rh)}" width="${rw * 2}" height="${rh * 2}" rx="5" fill="${fill}"/>`,
-      `<text x="${n1(lx)}" y="${n1(ly + 8)}" text-anchor="middle" font-family="Inter, Liberation Sans, DejaVu Sans, sans-serif" font-size="22" font-weight="800" fill="#fffaf3">${pin.n}</text>`,
+      `<rect x="${n1(lx - rw)}" y="${n1(ly - rh)}" width="${rw * 2}" height="${rh * 2}" rx="4" fill="${fill}"/>`,
+      `<text x="${n1(lx)}" y="${n1(ly + 5)}" text-anchor="middle" font-family="Inter, Liberation Sans, DejaVu Sans, sans-serif" font-size="16" font-weight="800" fill="#fffaf3">${pin.n}</text>`,
     );
   }
-  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Where stories 1 to 12 happened">
-    <rect width="${W}" height="${H}" fill="#d5e4f0"/>
-    <g fill="#1d3b34">${dots.join('')}</g>
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Where it happened">
+    <rect width="${W}" height="${H}" fill="#c5dced"/>
+    <g fill="#e7d3a8" stroke="#b7a27a" stroke-width="1.2">${land}</g>
+    ${seas}
+    ${marks.join('')}
     ${lines.join('')}
     ${badges.join('')}
   </svg>`;
-}
-
-export function ascii() {
-  const rows = [];
-  for (let r = 0; r < ROWS; r++) {
-    const lat = LAT_N - ((r + 0.5) / ROWS) * (LAT_N - LAT_S);
-    let line = '';
-    for (let c = 0; c < COLS; c++) {
-      const lon = -180 + ((c + 0.5) / COLS) * 360;
-      line += isLand(lon, lat) ? '#' : '.';
-    }
-    rows.push(line);
-  }
-  return rows.join('\n');
 }
