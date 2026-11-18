@@ -84,7 +84,7 @@ const legend = stories
   .map((s) => `${s.n} ${PLACES[s.n]}`)
   .join(' · ');
 
-const foot = `Every story was reported on ${DATE}; disputed claims are attributed. Sources: ${sources.join(', ')}.`;
+const foot = `Every story was reported on ${DATE}; disputed claims are attributed. Sources: ${sources.join(', ')}. Original drawings.`;
 const keyRow = GROUPS.map(([name, color]) => `<span><i style="background:${color}"></i>${name}</span>`).join('');
 
 const html = `<!DOCTYPE html>

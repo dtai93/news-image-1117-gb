@@ -135,3 +135,15 @@ Added a one-line field key (War, Diplomacy, Politics, Economy, Health, Climate, 
 ### Next (session 4)
 
 Re-read every label against the faithfulness notes. Squint test of the map numbers at 300 px. README with `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts`. Confirm two runs of `main.ts` match. Commit and push. Push belongs to session 4, not before.
+
+### Session 4 (done) — polish and ship
+
+Re-read the twelve cards, the also lines, and the footer against the faithfulness notes, at full size and at 300 px wide. The date "Tuesday 17 November 2026" and "40 STORIES · 6 CONTINENTS" were already true (no Antarctica story; Australia, Bolivia, and the Pacific states carry Oceania and South America). Map pins 1–12 still separate, and no card or also line was cut off.
+
+Label fixes in `data/stories.json`: the Quad dek no longer reads as if the Thursday Xi–Putin meeting happened on Tuesday; measles says the status was revoked and the US has over 5,700 cases and multiple deaths; the Canada headline says "eases", matching the C$400m dek; Gaza is attributed to Anadolu; Apple names four services, not only Pay and the App Store; the Kyiv dek says the seven dead and 50,000 without power are nationwide. The Kerch dek still says the span is "reported" down.
+
+Footer in `build/render.mjs` now ends with the source list and "Original drawings." The judge note stays. `out/` is gitignored. `sh build/build.sh`: 1024×1024 palette PNG, 99,817 bytes. Two runs of `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts` matched `entry.png` byte for byte.
+
+### Next
+
+None for this entry. Pushed to origin main.
