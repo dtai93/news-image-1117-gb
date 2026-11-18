@@ -87,3 +87,15 @@ Layout that fitted, top to bottom: masthead (full date, "THE DAY IN WORLD NEWS",
 ### Next (session 3)
 
 Replace each `.ill` SVG from the story `art` line (few shapes, 2–3 flat colours, no text in the icon) and replace `.map-slot` with one quiet world map and pins 1–12. Keep the type sizes. Re-run `sh build/build.sh` and confirm the file stays under 1,000,000 bytes.
+
+### Session 3a (done) — illustrations for stories 1–6
+
+`build/art/s1.mjs` through `s6.mjs` each export `art()` as an original flat SVG. Leads use a 320×150 viewBox; mains use 320×27 so the strip fills the card. `build/art/index.mjs` maps those six numbers to the functions and returns a neutral paper fallback for any other n. `build/render.mjs` calls that for every lead and main, so stories 7–12 stay on the fallback. The also-list and the map placeholder are unchanged.
+
+What each icon shows, from that story's `art` line: the Kerch Bridge with one roadway span tilted into the strait and a quadcopter above it; an intact Bahrain radar, a drone in three pieces short of the dish, and six ticks on an island; an airliner over a bay with the United States, India, Japan and Australia flags; three country outlines, a cracked health cross and measles spots; a sun, a hall, a cracked oil barrel and two arrows pulling apart; the Canada and China flags, a container and a tariff tag with a downward arrow. No text inside the icons. The Kerch dek still carries the "reported" hedge.
+
+`sh build/build.sh` wrote `entry.png` at 1024×1024, 82,563 bytes.
+
+### Next (session 3b)
+
+Draw stories 7–12 the same way (`s7.mjs` … `s12.mjs`, register them in `build/art/index.mjs`). Then replace `.map-slot` with one quiet world map and pins 1–12. Keep the type sizes. Re-run `sh build/build.sh` and stay under 1,000,000 bytes.

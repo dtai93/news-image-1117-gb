@@ -1,10 +1,10 @@
 // Reads data/stories.json and writes build/page.html (1024×1024).
-// Node standard library only. Illustrations are flat placeholders;
-// session 3 replaces the SVG inside each .ill and .map-slot.
+// Node standard library only. Stories 1–6 use build/art; the rest use a neutral fallback.
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { illustration } from './art/index.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
@@ -28,15 +28,6 @@ for (const s of stories) {
   if (!sources.includes(s.source)) sources.push(s.source);
 }
 
-const PAL = {
-  EUROPE: ['#d7e3f2', '#1e4d78'],
-  'MIDDLE EAST': ['#f6e1c2', '#a15c20'],
-  ASIA: ['#f6eec8', '#8d6b10'],
-  AMERICAS: ['#d9ead6', '#246b45'],
-  AFRICA: ['#f7dcc8', '#9a3b16'],
-  OCEANIA: ['#d2eef0', '#0e6c78'],
-};
-
 function esc(s) {
   return String(s)
     .replaceAll('&', '&amp;')
@@ -46,28 +37,7 @@ function esc(s) {
 }
 
 function icon(story, tall) {
-  const [bg, fg] = PAL[story.region] || PAL.ASIA;
-  const n = String(story.n);
-  const h = tall ? 150 : 36;
-  const shape = story.n % 3;
-  const motif = shape === 0
-    ? `<circle cx="248" cy="${tall ? 46 : 18}" r="${tall ? 26 : 10}" fill="${fg}"/>`
-    : shape === 1
-      ? `<rect x="214" y="${tall ? 22 : 8}" width="${tall ? 62 : 48}" height="${tall ? 44 : 20}" fill="${fg}"/>`
-      : `<polygon points="${tall ? '230,18 268,70 192,70' : '236,6 270,30 202,30'}" fill="${fg}"/>`;
-  const bars = tall
-    ? `<rect x="22" y="108" width="150" height="10" fill="#1a1612"/>
-       <rect x="22" y="126" width="96" height="8" fill="${fg}"/>`
-    : `<rect x="18" y="14" width="64" height="8" fill="${fg}"/>`;
-  const label = tall
-    ? `<text x="22" y="78" font-family="Inter, sans-serif" font-size="40" font-weight="700" fill="#1a1612">${n}</text>`
-    : '';
-  return `<svg class="ico" viewBox="0 0 300 ${h}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect width="300" height="${h}" fill="${bg}"/>
-    ${motif}
-    ${bars}
-    ${label}
-  </svg>`;
+  return illustration(story.n, tall);
 }
 
 function card(story, tier) {
